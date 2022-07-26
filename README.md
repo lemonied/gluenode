@@ -11,7 +11,7 @@ npm install one-node --save
 
 Node relationship diagram
 
-![Node relationship diagram](./example/example.png)
+![Node relationship diagram](https://raw.githubusercontent.com/timoodada/one-node/master/example/example.png)
 
 ```typescript
 import { createNode, OneNode } from 'one-node';
