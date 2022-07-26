@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <script src="../dist/one-node.development.umd.js"></script>
+  <script>
+    /**
+     * @typedef {import('../')} OneNode
+     */
+
+    /**
+     * @param {any} city
+     * @param {string} id
+     * @param {OneNode} oneNode
+     */
+    function getCityData(city, id, oneNode) {
+      if (city[id]) {
+        Object.keys(city[id]).forEach((key) => {
+          oneNode.appendChild(OneNode.createNode({
+            label: city[id][key],
+            value: key,
+          }));
+        });
+      }
+    }
+
+    fetch('./city.json').then(async (res) => {
+      const city = await res.json();
+      const root = OneNode.createNode({
+        label: '中国',
+        value: '86',
+      });
+      getCityData(city, '86', root);
+      console.log(root);
+    });
+  </script>
+</body>
+</html>
