@@ -1,21 +1,23 @@
 {
-  "name": "one-node",
+  "name": "gluenode",
   "version": "1.0.0",
   "description": "A DOM-like data structure",
   "repository": {
     "type": "git",
-    "url": "https://github.com/timoodada/one-node.git"
+    "url": "https://github.com/lemonied/gluenode.git"
   },
   "module": "lib/index.js",
-  "main": "dist/one-node.umd.js",
+  "main": "dist/glue-node.umd.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "dev": "webpack --config ./webpack.config.js --mode=development --watch",
+    "umd:dev": "webpack --config ./webpack.config.js --mode=development --watch",
+    "umd:build": "webpack --config ./webpack.config.js --mode=production",
     "lib:dev": "tsc -w",
-    "build": "webpack --config ./webpack.config.js --mode=production && tsc",
+    "lib:build": "tsc",
+    "build": "npm run umd:build && npm run lib:build",
     "test": "jest"
   },
-  "author": "chenjiyuan.123@qq.com",
+  "author": "chenjiyuan.super@gmail.com",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.18.9",

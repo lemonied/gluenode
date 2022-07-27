@@ -1,6 +1,6 @@
 import { createNode } from '../lib';
 
-test('create one-node', () => {
+test('create one node', () => {
 
   const diluc = createNode({
     name: 'Diluc',

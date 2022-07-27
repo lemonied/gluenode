@@ -5,21 +5,21 @@
   <title>Title</title>
 </head>
 <body>
-  <script src="../dist/one-node.development.umd.js"></script>
+  <script src="../dist/glue-node.development.umd.js"></script>
   <script>
     /**
-     * @typedef {import('../')} OneNode
-     */
+     * @var {import('../lib/index').GlueNode} GlueNode
+     * */
 
     /**
      * @param {any} city
      * @param {string} id
-     * @param {OneNode} oneNode
+     * @param {GlueNode} glueNode
      */
-    function getCityData(city, id, oneNode) {
+    function getCityData(city, id, glueNode) {
       if (city[id]) {
         Object.keys(city[id]).forEach((key) => {
-          oneNode.appendChild(OneNode.createNode({
+          glueNode.appendChild(GlueNode.create({
             label: city[id][key],
             value: key,
           }));
@@ -29,12 +29,13 @@
 
     fetch('./city.json').then(async (res) => {
       const city = await res.json();
-      const root = OneNode.createNode({
+      const root = GlueNode.create({
         label: '中国',
         value: '86',
       });
       getCityData(city, '86', root);
       console.log(root);
+      console.log(root.toJSON());
     });
   </script>
 </body>

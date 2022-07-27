@@ -6,10 +6,11 @@ module.exports = function(env, argv) {
     entry: path.resolve(__dirname, './src/index.ts'),
     output: {
       path: path.resolve(__dirname, './'),
-      filename: argv.mode === 'production' ? './dist/one-node.umd.js' : './dist/one-node.development.umd.js',
+      filename: argv.mode === 'production' ? './dist/glue-node.umd.js' : './dist/glue-node.development.umd.js',
       library: {
-        name: 'OneNode',
+        name: 'GlueNode',
         type: 'umd',
+        export: 'default',
       },
     },
     externals: {},

@@ -8,67 +8,67 @@ interface Point {
 }
 
 const edges: any[] = [];
-function makeRelation(oneNode: typeof henan) {
-  if (oneNode.parentNode) {
+function makeRelation(glueNode: typeof henan) {
+  if (glueNode.parentNode) {
     edges.push({
-      source: oneNode.get('value'),
-      target: oneNode.parentNode.get('value'),
+      source: glueNode.get('value'),
+      target: glueNode.parentNode.get('value'),
       label: {
         show: true,
         formatter: 'parentNode',
       },
     });
   }
-  if (oneNode.firstChild) {
+  if (glueNode.firstChild) {
     edges.push({
-      source: oneNode.get('value'),
-      target: oneNode.firstChild.get('value'),
+      source: glueNode.get('value'),
+      target: glueNode.firstChild.get('value'),
       label: {
         show: true,
         formatter: 'firstChild',
       },
     });
-    makeRelation(oneNode.firstChild);
+    makeRelation(glueNode.firstChild);
   }
-  if (oneNode.lastChild) {
+  if (glueNode.lastChild) {
     edges.push({
-      source: oneNode.get('value'),
-      target: oneNode.lastChild.get('value'),
+      source: glueNode.get('value'),
+      target: glueNode.lastChild.get('value'),
       label: {
         show: true,
         formatter: 'lastChild',
       },
     });
   }
-  if (oneNode.previousSibling) {
+  if (glueNode.previousSibling) {
     edges.push({
-      source: oneNode.get('value'),
-      target: oneNode.previousSibling.get('value'),
+      source: glueNode.get('value'),
+      target: glueNode.previousSibling.get('value'),
       label: {
         show: true,
         formatter: 'previousSibling',
       },
     });
   }
-  if (oneNode.nextSibling) {
+  if (glueNode.nextSibling) {
     edges.push({
-      source: oneNode.get('value'),
-      target: oneNode.nextSibling.get('value'),
+      source: glueNode.get('value'),
+      target: glueNode.nextSibling.get('value'),
       label: {
         show: true,
         formatter: 'nextSibling',
       },
     });
-    makeRelation(oneNode.nextSibling);
+    makeRelation(glueNode.nextSibling);
   }
 }
 makeRelation(henan);
 
-function makeData(oneNode: typeof henan, point: Point, size: number, color = 'red') {
+function makeData(glueNode: typeof henan, point: Point, size: number, color = 'red') {
   return {
-    id: oneNode.get('value'),
+    id: glueNode.get('value'),
     ...point,
-    name: oneNode.get('label'),
+    name: glueNode.get('label'),
     symbolSize: size,
     itemStyle: {
       color,
@@ -82,8 +82,8 @@ const data = [country];
 
 const colors = ['#52c41a', '#36cfc9', '#531dab', '#eb2f96', '#ad8b00', '#5b8c00'];
 /** others */
-function listChildren(oneNode: typeof henan, point: Point, colorIndex = 0, size = 10) {
-  const list = Array.from(oneNode.children);
+function listChildren(glueNode: typeof henan, point: Point, colorIndex = 0, size = 10) {
+  const list = Array.from(glueNode.children);
   list.forEach((v, k) => {
     data.push(makeData(v, point, size, colors[colorIndex % (colors.length - 1)]));
     point.x += 100;

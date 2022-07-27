@@ -1,9 +1,9 @@
 
-function parentInspect<T>(oneNode: OneNode<T>, parentLike: OneNode<T>) {
-  if (oneNode === parentLike) {
+function parentInspect<T>(glueNode: GlueNode<T>, parentLike: GlueNode<T>) {
+  if (glueNode === parentLike) {
     throw new Error('Can\'t insert to itself');
   }
-  let parent: OneNode<T> | null = oneNode.parentNode;
+  let parent: GlueNode<T> | null = glueNode.parentNode;
   while (parent !== null) {
     if (parent === parentLike) {
       throw new Error('Parent node cannot be inserted into child node');
@@ -13,13 +13,13 @@ function parentInspect<T>(oneNode: OneNode<T>, parentLike: OneNode<T>) {
   return true;
 }
 
-export class OneNode<T> {
+class GlueNode<T> {
   readonly #original: T;
-  #parentNode: OneNode<T> | null = null;
-  #previousSibling: OneNode<T> | null = null;
-  #nextSibling: OneNode<T> | null = null;
-  #firstChild: OneNode<T> | null = null;
-  #lastChild: OneNode<T> | null = null;
+  #parentNode: GlueNode<T> | null = null;
+  #previousSibling: GlueNode<T> | null = null;
+  #nextSibling: GlueNode<T> | null = null;
+  #firstChild: GlueNode<T> | null = null;
+  #lastChild: GlueNode<T> | null = null;
   public get parentNode() {
     return this.#parentNode;
   }
@@ -47,6 +47,9 @@ export class OneNode<T> {
       }
     };
   }
+  public static create<T>(original: T) {
+    return new GlueNode(original);
+  }
   constructor(original: T) {
     this.#original = { ...original };
   }
@@ -56,7 +59,7 @@ export class OneNode<T> {
   public keys(): Array<keyof T> {
     return Object.keys(this.#original) as Array<keyof T>;
   }
-  public insertBefore(newNode: OneNode<T>, oldNode: OneNode<T>) {
+  public insertBefore(newNode: GlueNode<T>, oldNode: GlueNode<T>) {
     if (parentInspect(this, newNode)) {
       newNode.remove();
       if (oldNode.parentNode !== this) {
@@ -72,52 +75,52 @@ export class OneNode<T> {
     }
     return this;
   }
-  public prependChild(oneNode: OneNode<T>) {
-    if (parentInspect(this, oneNode)) {
-      oneNode.remove();
+  public prependChild(glueNode: GlueNode<T>) {
+    if (parentInspect(this, glueNode)) {
+      glueNode.remove();
       if (this.firstChild && this.lastChild) {
-        this.firstChild.#previousSibling = oneNode;
-        oneNode.#nextSibling = this.firstChild;
+        this.firstChild.#previousSibling = glueNode;
+        glueNode.#nextSibling = this.firstChild;
       } else {
-        this.#lastChild = oneNode;
+        this.#lastChild = glueNode;
       }
-      oneNode.#parentNode = this;
-      this.#firstChild = oneNode;
+      glueNode.#parentNode = this;
+      this.#firstChild = glueNode;
     }
     return this;
   }
-  public appendChild(oneNode: OneNode<T>) {
-    if (parentInspect(this, oneNode)) {
-      oneNode.remove();
+  public appendChild(glueNode: GlueNode<T>) {
+    if (parentInspect(this, glueNode)) {
+      glueNode.remove();
       if (this.firstChild && this.lastChild) {
-        this.lastChild.#nextSibling = oneNode;
-        oneNode.#previousSibling = this.lastChild;
+        this.lastChild.#nextSibling = glueNode;
+        glueNode.#previousSibling = this.lastChild;
       } else {
-        this.#firstChild = oneNode;
+        this.#firstChild = glueNode;
       }
-      oneNode.#parentNode = this;
-      this.#lastChild = oneNode;
+      glueNode.#parentNode = this;
+      this.#lastChild = glueNode;
     }
     return this;
   }
-  public removeChild(oneNode: OneNode<T>) {
-    const previous = oneNode.previousSibling;
-    const next = oneNode.nextSibling;
+  public removeChild(glueNode: GlueNode<T>) {
+    const previous = glueNode.previousSibling;
+    const next = glueNode.nextSibling;
     if (previous) {
-      previous.#nextSibling = oneNode.nextSibling;
+      previous.#nextSibling = glueNode.nextSibling;
     }
     if (next) {
-      next.#previousSibling = oneNode.previousSibling;
+      next.#previousSibling = glueNode.previousSibling;
     }
-    if (this.firstChild === oneNode) {
-      this.#firstChild = oneNode.nextSibling;
+    if (this.firstChild === glueNode) {
+      this.#firstChild = glueNode.nextSibling;
     }
-    if (this.lastChild === oneNode) {
-      this.#lastChild = oneNode.previousSibling;
+    if (this.lastChild === glueNode) {
+      this.#lastChild = glueNode.previousSibling;
     }
-    oneNode.#parentNode = null;
-    oneNode.#previousSibling = null;
-    oneNode.#nextSibling = null;
+    glueNode.#parentNode = null;
+    glueNode.#previousSibling = null;
+    glueNode.#nextSibling = null;
     return this;
   }
   public remove() {
@@ -132,6 +135,4 @@ export class OneNode<T> {
   }
 }
 
-export function createNode<T>(original: T) {
-  return new OneNode(original);
-}
+export default GlueNode;

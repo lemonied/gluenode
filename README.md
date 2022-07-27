@@ -1,20 +1,20 @@
-# One Node
+# Glue Node
 
 A DOM-like data structure
 
 ## Install
 ```bash
-npm install one-node --save
+npm install gluenode --save
 ```
 
 ## Example
 
 Node relationship diagram
 
-![Node relationship diagram](https://raw.githubusercontent.com/timoodada/one-node/master/example/example.png)
+![Node relationship diagram](https://raw.githubusercontent.com/lemonied/gluenode/master/example/example.png)
 
 ```typescript
-import { createNode, OneNode } from 'one-node';
+import { createNode } from 'gluenode';
 
 const windy = createNode({
   name: 'Windy',
@@ -56,8 +56,8 @@ barbara.appendChild(bennett)
   .appendChild(jean);
 
 diluc.previousSibling; // Output: null
-diluc.nextSibling; // Output: klee(OneNode<{ name: string; age: number; }>)
-klee.parentNode; // Output: windy(OneNode<{ name: string; age: number; }>)
+diluc.nextSibling; // Output: klee(GlueNode<{ name: string; age: number; }>)
+klee.parentNode; // Output: windy(GlueNode<{ name: string; age: number; }>)
 
 Array.from(barbara.children); // Output: [bennett, jean]
 barbara.firstChild; // Output: bennett
