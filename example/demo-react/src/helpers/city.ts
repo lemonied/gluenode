@@ -61,4 +61,6 @@ cities.forEach(v => {
   henan.appendChild(city);
 });
 
+console.log(henan);
+
 export { henan };

@@ -56,6 +56,10 @@ class GlueNode<T> {
   public get<K extends keyof T>(key: K): T[K] {
     return this.#original[key];
   }
+  public set<K extends keyof T>(key: K, value: T[K]) {
+    this.#original[key] = value;
+    return this;
+  }
   public keys(): Array<keyof T> {
     return Object.keys(this.#original) as Array<keyof T>;
   }

@@ -5,3 +5,5 @@
 /webpack.config.js
 /node_modules
 /test
+/clean.js
+/.babelrc
