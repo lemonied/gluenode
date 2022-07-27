@@ -1,4 +1,4 @@
-# Glue Node ![npm](https://img.shields.io/npm/v/gluenode)
+# Glue Node [![npm](https://img.shields.io/npm/v/gluenode)](https://www.npmjs.com/package/gluenode)
 
 A DOM-like data structure
 
