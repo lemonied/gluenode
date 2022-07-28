@@ -1,6 +1,6 @@
 {
   "name": "gluenode",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A DOM-like data structure",
   "keywords": ["DOM-like", "tree structure", "data structure"],
   "repository": {

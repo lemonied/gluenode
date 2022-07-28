@@ -2,7 +2,7 @@
 
 A DOM-like data structure
 
-## Install
+## Get Started
 ```bash
 npm install gluenode --save
 ```
@@ -64,3 +64,38 @@ barbara.firstChild; // Output: bennett
 barbara.lastChild; // Output: jean
 
 ```
+
+## API
+
+### Constructor
+- `new (original: T): GlueNode<T>`
+
+- `GlueNode.create(original: T): GlueNode<T>`
+
+### Properties
+
+- `parentNode` Get parent node
+- `previousSibling` Get previous sibling
+- `nextSibling` Get next sibling
+- `firstChild` Get first child
+- `lastChild` Get last child
+- `firstSibling` Get first sibling
+- `lastSibling` Get last sibling
+- `children` Get children { [Symbol.iterator] }
+```typescript
+Array.from(glueNode.children) // transform glueNode.children to Array
+```
+
+### Methods
+- `get<K extends keyof T>(key: K): T[K]`
+- `set<K extends keyof T>(key: K, value: T[K]): this`
+- `replaceChild(newNode: GlueNode<T>, oldNode: GlueNode<T>): this`
+- `insertBefore(newNode: GlueNode<T>, oldNode: GlueNode<T>): this`
+- `prependChild(newNode: GlueNode<T>): this`
+- `appendChild(newNode: GlueNode<T>): this`
+- `removeChild(node: GlueNode<T>): this`
+- `remove(): this`
+- `find(predicate: (node: GlueNode<T>) => boolean): GlueNode<T> | null`
+- `findChild(predicate: (node: GlueNode<T>) => boolean): GlueNode<T> | null`
+- `findSibling(predicate: (node: GlueNode<T>) => boolean): GlueNode<T> | null`
+- `toJSON(): T & { children: T[] }`

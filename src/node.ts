@@ -35,6 +35,20 @@ class GlueNode<T> {
   public get lastChild() {
     return this.#lastChild;
   }
+  public get firstSibling() {
+    let current: GlueNode<T> = this;
+    while (current.previousSibling !== null) {
+      current = current.previousSibling;
+    }
+    return current;
+  }
+  public get lastSibling() {
+    let current: GlueNode<T> = this;
+    while (current.nextSibling !== null) {
+      current = current.nextSibling;
+    }
+    return current;
+  }
   public get children() {
     const _this = this;
     return {
@@ -62,6 +76,11 @@ class GlueNode<T> {
   }
   public keys(): Array<keyof T> {
     return Object.keys(this.#original) as Array<keyof T>;
+  }
+  public replaceChild(newNode: GlueNode<T>, oldNode: GlueNode<T>) {
+    this.insertBefore(newNode, oldNode);
+    oldNode.remove();
+    return this;
   }
   public insertBefore(newNode: GlueNode<T>, oldNode: GlueNode<T>) {
     if (parentInspect(this, newNode)) {
@@ -130,6 +149,45 @@ class GlueNode<T> {
   public remove() {
     this.parentNode?.removeChild(this);
     return this;
+  }
+  public find(predicate: (node: GlueNode<T>) => boolean): GlueNode<T> | null {
+    let current: GlueNode<T> | null = this.firstChild;
+    while (current !== null) {
+      if (predicate(current)) {
+        return current;
+      } else {
+        const target = current.find(predicate);
+        if (target) return target;
+      }
+      current = current.nextSibling;
+    }
+    return null;
+  }
+  public findChild(predicate: (node: GlueNode<T>) => boolean): GlueNode<T> | null {
+    let current: GlueNode<T> | null = this.firstChild;
+    while (current !== null) {
+      if (predicate(current)) {
+        return current;
+      }
+      current = current.nextSibling;
+    }
+    return null;
+  }
+  public findSibling(predicate: (node: GlueNode<T>) => boolean): GlueNode<T> | null {
+    if (predicate(this)) return this;
+    let previous: GlueNode<T> | null = this.previousSibling;
+    let next: GlueNode<T> | null = this.nextSibling;
+    while (previous !== null || next !== null) {
+      if (previous) {
+        if (predicate(previous)) return previous;
+        previous = previous.previousSibling;
+      }
+      if (next) {
+        if (predicate(next)) return next;
+        next = next.nextSibling;
+      }
+    }
+    return null;
   }
   public toJSON(): T & { children: T[] } {
     return {
