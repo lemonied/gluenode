@@ -19,10 +19,12 @@
     function getCityData(city, id, glueNode) {
       if (city[id]) {
         Object.keys(city[id]).forEach((key) => {
-          glueNode.appendChild(GlueNode.create({
+          const node = GlueNode.create({
             label: city[id][key],
             value: key,
-          }));
+          });
+          glueNode.appendChild(node);
+          getCityData(city, key, node);
         });
       }
     }

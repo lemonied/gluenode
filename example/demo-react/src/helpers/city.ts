@@ -61,8 +61,6 @@ cities.forEach(v => {
   henan.appendChild(city);
 });
 
-const test = henan.children[0];
-
 console.log(henan);
 
 export { henan };
