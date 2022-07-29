@@ -1,3 +1,4 @@
+import { NodeCollections } from './collections';
 
 function parentInspect<T>(glueNode: GlueNode<T>, parentLike: GlueNode<T>) {
   if (glueNode === parentLike) {
@@ -20,6 +21,9 @@ class GlueNode<T> {
   #nextSibling: GlueNode<T> | null = null;
   #firstChild: GlueNode<T> | null = null;
   #lastChild: GlueNode<T> | null = null;
+  public get origin() {
+    return this.#original;
+  }
   public get parentNode() {
     return this.#parentNode;
   }
@@ -49,17 +53,38 @@ class GlueNode<T> {
     }
     return current;
   }
+  public get rootNode() {
+    let current: GlueNode<T> = this;
+    while (current.parentNode !== null) {
+      current = current.parentNode;
+    }
+    return current;
+  }
+  public get sourceChain() {
+    const _this = this;
+    return new NodeCollections<T>(function*() {
+      let next: GlueNode<T> | null = _this;
+      while (next) {
+        yield next;
+        next = next.parentNode;
+      }
+    });
+  }
   public get children() {
     const _this = this;
-    return {
-      *[Symbol.iterator]() {
-        let next = _this.firstChild;
-        while (next) {
-          yield next;
-          next = next.nextSibling;
-        }
+    return new NodeCollections<T>(function*() {
+      let next = _this.firstChild;
+      while (next) {
+        yield next;
+        next = next.nextSibling;
       }
-    };
+    });
+  }
+  public get siblings() {
+    const _this = this;
+    return this.parentNode?.children || new NodeCollections<T>(function*() {
+      yield _this;
+    });
   }
   public static create<T>(original: T) {
     return new GlueNode(original);
@@ -174,8 +199,7 @@ class GlueNode<T> {
     return null;
   }
   public findSibling(predicate: (node: GlueNode<T>) => boolean): GlueNode<T> | null {
-    if (predicate(this)) return this;
-    let previous: GlueNode<T> | null = this.previousSibling;
+    let previous: GlueNode<T> | null = this;
     let next: GlueNode<T> | null = this.nextSibling;
     while (previous !== null || next !== null) {
       if (previous) {

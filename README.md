@@ -74,6 +74,7 @@ barbara.lastChild; // Output: jean
 
 ### Properties
 
+- `origin` Get original object
 - `parentNode` Get parent node
 - `previousSibling` Get previous sibling
 - `nextSibling` Get next sibling
@@ -81,9 +82,25 @@ barbara.lastChild; // Output: jean
 - `lastChild` Get last child
 - `firstSibling` Get first sibling
 - `lastSibling` Get last sibling
+- `rootNode` Get root node
+- `sourceChain` Get chain
+```typescript
+Array.from(glueNode.sourceChain) // [this, father, grandfather, ..., root]
+// or
+glueNode.sourceChain.toArray()
+```
 - `children` Get children { [Symbol.iterator] }
 ```typescript
-Array.from(glueNode.children) // transform glueNode.children to Array
+// transform glueNode.children to Array
+Array.from(glueNode.children)
+// or
+glueNode.children.toArray()
+```
+- `siblings` Get all siblings
+```typescript
+Array.from(glueNode.siblings) // [firstSibling, ... , previousSibling, this, nextSibling, ..., lastSibling]
+// or
+glueNode.siblings.toArray()
 ```
 
 ### Methods
